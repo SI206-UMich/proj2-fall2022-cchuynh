@@ -124,7 +124,13 @@ def get_detailed_listing_database(html_file):
         ...
     ]
     """
-    
+    tup_list = get_listings_from_search_results(html_file)
+    lst = []
+    for i in tup_list:
+        details = get_listing_information(i[2])
+        lst.append(i + details)
+    return lst
+
 
 
 def write_csv(data, filename):
