@@ -4,6 +4,7 @@ import re
 import os
 import csv
 import unittest
+# Partners: Angel Huang
 
 
 def get_listings_from_search_results(html_file):
@@ -25,7 +26,23 @@ def get_listings_from_search_results(html_file):
         ('Loft in Mission District', 210, '1944564'),  # example
     ]
     """
-    pass
+    price_list = []
+    id_list = []
+    name_list = []
+    with open(html_file, 'r') as f: 
+        contents = f.read()
+        soup = BeautifulSoup(contents, 'html.parser')
+    tag = soup.find_all("div", class_ = "t1jojoys dir dir-ltr")
+    price_tag = soup.find_all("span", class_= "_tyxjp1")
+    for id in price_tag:
+        p = id.text
+        num = p.strip("$")
+        price_list.append(int(num))
+    for id in tag:
+        name_list.append(id.text)
+        id_list.append(id.get('id').strip("title_"))
+    listing_list = list(zip(name_list, price_list, id_list))
+    return listing_list
 
 
 def get_listing_information(listing_id):
@@ -52,7 +69,7 @@ def get_listing_information(listing_id):
         number of bedrooms
     )
     """
-    pass
+    
 
 
 def get_detailed_listing_database(html_file):
@@ -69,7 +86,7 @@ def get_detailed_listing_database(html_file):
         ...
     ]
     """
-    pass
+    
 
 
 def write_csv(data, filename):
@@ -94,7 +111,7 @@ def write_csv(data, filename):
 
     This function should not return anything.
     """
-    pass
+
 
 
 def check_policy_numbers(data):
@@ -116,7 +133,7 @@ def check_policy_numbers(data):
     ]
 
     """
-    pass
+
 
 
 def extra_credit(listing_id):
