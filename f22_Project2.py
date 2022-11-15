@@ -69,7 +69,45 @@ def get_listing_information(listing_id):
         number of bedrooms
     )
     """
+
+    policy_list = []
+    room_list = []
+    bedroom_list = []
+
+    file = "html_files/listing_" + str(listing_id) + ".html"
+    with open(file, 'r') as f:
+        contents = f.read()
+        soup = BeautifulSoup(contents, 'html.parser')
+    f.close()
+    policy_tag = soup.find("li", class_ = "f19phm7j dir dir-ltr").find("span")
+    if ("pending" in policy_tag.text) or ("Pending" in policy_tag.text):
+        policy_list.append("Pending")
+    elif ("exempt" in policy_tag.text) or ("Exempt" in policy_tag.text) or ("License not needed per OSTR" in policy_tag.text):
+        policy_list.append("Exempt")
+    else:
+        policy_list.append(policy_tag.text)
+
+    room_type = soup.find("h2", class_ = "_14i3z6h")
+    if ("private" in room_type.text) or ("Private" in room_type.text):
+        room_list.append("Private Room")
+    elif ("shared" in room_type.text) or ("Shared" in room_type.text):
+        room_list.append("Shared Room")
+    else:
+        room_list.append("Entire Room")
+
+    bedroom_num = soup.find_all("li", class_ = "l7n4lsf dir dir-ltr")
+    bed = bedroom_num[1].find_all("span")[2].text
+    #print(bed)
+    if "studio" in bed:
+        bedroom_list.append(1)
+    elif "Studio" in bed:
+        bedroom_list.append(1)
+    else:
+        bedroom_list.append(bed[0])
     
+    for i in range(len(policy_list)):
+        tup = (policy_list[i], room_list[i], int(bedroom_list[i]))
+    return tup
 
 
 def get_detailed_listing_database(html_file):
