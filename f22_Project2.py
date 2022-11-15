@@ -132,7 +132,6 @@ def get_detailed_listing_database(html_file):
     return lst
 
 
-
 def write_csv(data, filename):
     """
     Write a function that takes in a list of tuples (called data, i.e. the
@@ -155,7 +154,16 @@ def write_csv(data, filename):
 
     This function should not return anything.
     """
+    sort_data = sorted(data, key=lambda x:x[1])
 
+    f_open = open(filename, "w")
+    column_header = ["Listing Title", "Cost", "Listing ID", "Policy Number", "Place Type", "Number of Bedrooms"]
+    f_open.close()
+
+    with open(filename, "w", newline = '') as file:
+        writer = csv.writer(file)
+        writer.writerow(column_header)
+        writer.writerows(sort_data)
 
 
 def check_policy_numbers(data):
