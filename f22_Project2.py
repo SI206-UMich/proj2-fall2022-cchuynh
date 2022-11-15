@@ -185,7 +185,17 @@ def check_policy_numbers(data):
     ]
 
     """
-
+    lst = []
+    for i in data:
+        num = i[3]
+        if num != "Pending" and num != "Exempt":
+            pat1 = "20\d{2}-00\d{4}STR"
+            pat2 = "STR-000[0-9]{4}"
+            if re.findall(pat1, num) or re.findall(pat2, num):
+                continue
+            else:
+                lst.append(i[2])
+    return lst
 
 
 def extra_credit(listing_id):
